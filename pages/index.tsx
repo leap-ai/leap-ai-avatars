@@ -60,10 +60,16 @@ const Home = () => {
     <>
       <VStack h="100vh" spacing={4} bg="#6D051E">
         <VStack spacing={1}>
-          <Heading pt={32} color="gray.200">
+          <Heading pt={32} color="gray.200" fontFamily="harryfont">
             Generate Potter.
           </Heading>
-          <Text color="gray.300">
+          <Text
+            color="gray.300"
+            fontSize="lg"
+            w="lg"
+            textAlign="center"
+            fontFamily="monospace"
+          >
             Enter a prompt like "@harry as a cat" to generate an image.
           </Text>
         </VStack>
@@ -81,6 +87,7 @@ const Home = () => {
               generate();
             }
           }}
+          fontFamily="monospace"
           placeholder="Enter your image generation prompt here"
         />
 
