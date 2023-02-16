@@ -17,7 +17,7 @@ import {
 
 import { AiFillGithub } from "react-icons/ai";
 import { NextSeo } from "next-seo";
-import prompts from "./helpers/prompts";
+import prompts from "helpers/prompts";
 
 const Home = () => {
   const [prompt, setPrompt] = useState<string>("");
