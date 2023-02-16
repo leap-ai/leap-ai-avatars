@@ -1,38 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# generate potter 🧙
 
-## Getting Started
+you're a coder harry. treat this repo as diagon alley, it has everything you need to deploy a custom LeapML model ✨
 
-First, run the development server:
+let's get started by forking this repository (button top right), and downloading it to your computer. from there follow the below :)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+<b>NOTE: if you don't already have a trained model, head to `leapml.dev`</b>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Setup
+1. Head to `pages/index.tsx` for editing text, prompts, and colors to match your theme
+2. Replace the model ID in `/pages/api/generate` to fit your new model you created on `leapml.dev`
+3. Add your credentials in `.env`, following the `.envExample` file
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Run it locally
+1. Open the terminal
+2. Run `npm install` to grab the necceary packages
+3. Hit `npm run dev` to start your server on `http://localhost:3000`
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Deploy to the world
+1. Push all your changes to Github (or another git provider)
+2. Head to vercel.app, import your repo, and hit deploy
+3. Go to settings of the deployment, add your .env, and rebuild
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Huzah! You've got off localhost 👏
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Feel free to DM me if you have any issues
+https://twitter.com/aleemrehmtulla
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
