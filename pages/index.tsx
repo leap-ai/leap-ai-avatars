@@ -24,7 +24,7 @@ const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [images, setImages] = useState<string[]>([
-    "https://leap-template.vercel.app/default.png",
+    "https://generatepotter.com/default.png",
   ]);
 
   const generate = async () => {
