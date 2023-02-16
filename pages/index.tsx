@@ -21,7 +21,7 @@ const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [image, setImage] = useState<string>(
-    "http://localhost:3002/default.png"
+    "https://leap-template.vercel.app/default.png"
   );
 
   const prompts = [
@@ -67,24 +67,6 @@ const Home = () => {
             Enter a prompt like "@harry as a cat" to generate an image.
           </Text>
         </VStack>
-
-        <HStack
-          border="1px"
-          borderColor="gray.200"
-          color="white"
-          p={4}
-          py={2}
-          rounded="md"
-          _hover={{ bg: "#3f0311" }}
-          cursor="pointer"
-          transitionDuration="200ms"
-          pos="absolute"
-          bottom={4}
-          right={4}
-        >
-          <AiFillGithub color="white" />
-          <Text>Train Your Own Character</Text>
-        </HStack>
 
         <Input
           w="30rem"
@@ -146,6 +128,24 @@ const Home = () => {
             </WrapItem>
           ))}
         </Wrap>
+        <HStack
+          border="1px"
+          borderColor="gray.200"
+          color="white"
+          p={4}
+          py={2}
+          rounded="md"
+          _hover={{ bg: "#3f0311" }}
+          cursor="pointer"
+          transitionDuration="200ms"
+          pos="absolute"
+          bottom={4}
+          right={4}
+          onClick={() => window.open("https://leap-template.vercel.app")}
+        >
+          <AiFillGithub color="white" />
+          <Text>Train Your Own Character</Text>
+        </HStack>
       </VStack>
     </>
   );
