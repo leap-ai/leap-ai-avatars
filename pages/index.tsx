@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 import { AiFillGithub } from "react-icons/ai";
+import { NextSeo } from "next-seo";
 
 const Home = () => {
   const [prompt, setPrompt] = useState<string>("");
@@ -59,6 +60,10 @@ const Home = () => {
 
   return (
     <>
+      <NextSeo
+        title="Generate Potter"
+        description="Generate Potter is a web app that uses the LeapML API to generate images of Harry Potter. It's built with Next.js, Chakra UI, and Leap AI."
+      />
       <VStack h="100vh" w="100vw" spacing={4} bg="#6D051E" px={4}>
         <VStack spacing={1}>
           <Heading
