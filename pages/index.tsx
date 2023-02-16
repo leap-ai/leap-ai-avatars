@@ -107,8 +107,8 @@ const Home = () => {
 
         <Button
           w={{ base: "full", md: "30rem" }}
-          _hover={{ opacity: 0.8 }}
-          _active={{ transform: "scale(0.98)", opacity: 0.7 }}
+          _hover={loading ? {} : { opacity: 0.8 }}
+          _active={loading ? {} : { transform: "scale(0.98)", opacity: 0.7 }}
           transitionDuration="200ms"
           bg="#C99D25"
           color="white"
@@ -118,20 +118,12 @@ const Home = () => {
           fontSize="lg"
           key={prompt}
           onClick={() => generate()}
+          isLoading={loading}
         >
           Generate
         </Button>
 
         <Box w={{ base: "full", md: "30rem" }} h="auto">
-          {loading && (
-            <Spinner
-              pos="absolute"
-              top="50%"
-              left="50%"
-              zIndex={99}
-              color="white"
-            />
-          )}
           {images.map((image) => (
             <Image
               key={image}
