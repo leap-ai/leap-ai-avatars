@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import {
   Box,
+  Button,
   Heading,
   HStack,
   Image,
@@ -16,31 +17,18 @@ import {
 
 import { AiFillGithub } from "react-icons/ai";
 import { NextSeo } from "next-seo";
+import prompts from "./helpers/prompts";
 
 const Home = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [image, setImage] = useState<string>(
-    "https://leap-template.vercel.app/default.png"
-  );
-
-  const prompts = [
-    "Harry in the forest",
-    "Werewolfs sitting with Harry",
-    "A portrait of Harry",
-    "Harry with red hair",
-    "Harry in Toronto, in the middle of a snowstorm",
-    "A room with blue walls and a red carpet, with harry sitting on a black chair",
-  ];
+  const [images, setImages] = useState<string[]>([
+    "https://leap-template.vercel.app/default.png",
+  ]);
 
   const generate = async () => {
     setLoading(true);
-
-    // in case they put a raw name in the prompt, replace it with @harry
-    if (prompt.toLowerCase().includes("harry")) {
-      setPrompt(prompt.toLowerCase().replace("harry", "@harry"));
-    }
 
     // hit leap in our nextjs api route
     const response = await fetch("/api/generate", {
@@ -52,9 +40,15 @@ const Home = () => {
     });
     const image = await response.json();
     console.log(image);
+    if (image.error) {
+      window.alert("Error: " + image.error + " " + image.message);
+      setLoading(false);
+      return;
+    }
 
-    // set it, to switch the default image
-    setImage(image.images[0].uri);
+    // set images array, to switch the default image
+    const uris = image.images.map((image: { uri: string }) => image.uri);
+    setImages(uris);
     setLoading(false);
   };
 
@@ -64,7 +58,14 @@ const Home = () => {
         title="Generate Potter"
         description="Generate Potter is a web app that uses the LeapML API to generate images of Harry Potter. It's built with Next.js, Chakra UI, and Leap AI."
       />
-      <VStack h="100vh" w="100vw" spacing={4} bg="#6D051E" px={4}>
+      <VStack
+        minH="100vh"
+        w="100vw"
+        spacing={4}
+        bg="#6D051E"
+        px={4}
+        paddingBottom={4}
+      >
         <VStack spacing={1}>
           <Heading
             pt={{
@@ -104,7 +105,24 @@ const Home = () => {
           placeholder="Enter your image generation prompt here"
         />
 
-        <Box w={{ base: "full", md: "30rem" }} h={{ base: "3/4", md: "20rem" }}>
+        <Button
+          w={{ base: "full", md: "30rem" }}
+          _hover={{ opacity: 0.8 }}
+          _active={{ transform: "scale(0.98)", opacity: 0.7 }}
+          transitionDuration="200ms"
+          bg="#C99D25"
+          color="white"
+          p={2}
+          fontFamily="monospace"
+          rounded="lg"
+          fontSize="lg"
+          key={prompt}
+          onClick={() => generate()}
+        >
+          Generate
+        </Button>
+
+        <Box w={{ base: "full", md: "30rem" }} h="auto">
           {loading && (
             <Spinner
               pos="absolute"
@@ -114,36 +132,40 @@ const Home = () => {
               color="white"
             />
           )}
-          <Image
-            src={image}
-            alt="Harry Potter"
-            rounded="lg"
-            w="full"
-            h={{ base: "3/4", md: "20rem" }}
-            objectFit="cover"
-            transitionDuration="200ms"
-            opacity={loading ? 0.3 : 1}
-          />
+          {images.map((image) => (
+            <Image
+              key={image}
+              src={image}
+              alt="Harry Potter"
+              rounded="lg"
+              w="full"
+              h={{ base: "3/4", md: "20rem" }}
+              objectFit="cover"
+              transitionDuration="200ms"
+              opacity={loading ? 0.3 : 1}
+            />
+          ))}
         </Box>
 
-        <Wrap w={{ base: "full", md: "30rem" }} justify="left">
+        <Wrap w={{ base: "full", md: "30rem" }} justify="center">
           {prompts.map((prompt) => (
-            <WrapItem key={prompt}>
+            <WrapItem key={prompt.label}>
               <HStack
                 w="fit"
                 _hover={{ opacity: 0.8 }}
                 _active={{ transform: "scale(0.98)", opacity: 0.7 }}
                 transitionDuration="200ms"
-                bg="#C99D25"
+                fontWeight={"bold"}
                 color="white"
                 p={2}
+                border={"1px solid #fff"}
                 rounded="lg"
                 fontSize="xs"
-                key={prompt}
+                key={prompt.label}
                 cursor="pointer"
-                onClick={() => setPrompt(prompt)}
+                onClick={() => setPrompt(prompt.prompt)}
               >
-                <Text>{prompt}</Text>
+                <Text>{prompt.label}</Text>
               </HStack>
             </WrapItem>
           ))}
@@ -165,7 +187,9 @@ const Home = () => {
           }
         >
           <AiFillGithub color="black" />
-          <Text>Train Your Own Character</Text>
+          <Text fontWeight={"bold"} color={"#1c1c1c"}>
+            Train Your Own Character
+          </Text>
         </HStack>
       </VStack>
     </>
