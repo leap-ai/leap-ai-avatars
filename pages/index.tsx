@@ -58,15 +58,22 @@ const Home = () => {
 
   return (
     <>
-      <VStack h="100vh" spacing={4} bg="#6D051E">
+      <VStack h="100vh" w="100vw" spacing={4} bg="#6D051E" px={4}>
         <VStack spacing={1}>
-          <Heading pt={32} color="gray.200" fontFamily="harryfont">
+          <Heading
+            pt={{
+              base: 12,
+              md: 32,
+            }}
+            color="gray.200"
+            fontFamily="harryfont"
+          >
             Generate Potter.
           </Heading>
           <Text
             color="gray.300"
             fontSize="lg"
-            w="lg"
+            w={{ base: "full", md: "lg" }}
             textAlign="center"
             fontFamily="monospace"
           >
@@ -75,7 +82,7 @@ const Home = () => {
         </VStack>
 
         <Input
-          w="30rem"
+          w={{ base: "full", md: "30rem" }}
           py={4}
           color="gray.100"
           focusBorderColor="gray.100"
@@ -91,7 +98,7 @@ const Home = () => {
           placeholder="Enter your image generation prompt here"
         />
 
-        <Box w="30rem" h="30rem" pos="relative">
+        <Box w={{ base: "full", md: "30rem" }} h={{ base: "3/4", md: "20rem" }}>
           {loading && (
             <Spinner
               pos="absolute"
@@ -106,14 +113,14 @@ const Home = () => {
             alt="Harry Potter"
             rounded="lg"
             w="full"
-            h="20rem"
+            h={{ base: "3/4", md: "20rem" }}
             objectFit="cover"
             transitionDuration="200ms"
             opacity={loading ? 0.3 : 1}
           />
         </Box>
 
-        <Wrap w="30rem" h="full">
+        <Wrap w={{ base: "full", md: "30rem" }} justify="center">
           {prompts.map((prompt) => (
             <WrapItem key={prompt}>
               <HStack
@@ -136,13 +143,12 @@ const Home = () => {
           ))}
         </Wrap>
         <HStack
-          border="1px"
-          borderColor="gray.200"
-          color="white"
+          bg="white"
           p={4}
           py={2}
           rounded="md"
-          _hover={{ bg: "#3f0311" }}
+          _hover={{ opacity: 0.8 }}
+          _active={{ transform: "scale(0.99)", opacity: 0.7 }}
           cursor="pointer"
           transitionDuration="200ms"
           pos="absolute"
@@ -150,7 +156,7 @@ const Home = () => {
           right={4}
           onClick={() => window.open("https://leap-template.vercel.app")}
         >
-          <AiFillGithub color="white" />
+          <AiFillGithub color="black" />
           <Text>Train Your Own Character</Text>
         </HStack>
       </VStack>
