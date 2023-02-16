@@ -21,5 +21,9 @@ let's get started by forking this repository (button top right), and downloading
 2. Head to vercel.app, import your repo, and hit deploy
 3. Go to settings of the deployment, add your .env, and rebuild
 
+### Huzah! You've got off localhost 👏
+
+Feel free to DM me if you have any issues
+https://twitter.com/aleemrehmtulla
 
 
