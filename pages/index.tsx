@@ -17,6 +17,7 @@ import {
 
 import { AiFillGithub } from "react-icons/ai";
 import { NextSeo } from "next-seo";
+
 import prompts from "helpers/prompts";
 
 const Home = () => {
@@ -29,7 +30,6 @@ const Home = () => {
 
   const generate = async () => {
     setLoading(true);
-
     // hit leap in our nextjs api route
     const response = await fetch("/api/generate", {
       method: "POST",
@@ -45,7 +45,6 @@ const Home = () => {
       setLoading(false);
       return;
     }
-
     // set images array, to switch the default image
     const uris = image.images.map((image: { uri: string }) => image.uri);
     setImages(uris);
@@ -84,7 +83,7 @@ const Home = () => {
             textAlign="center"
             fontFamily="monospace"
           >
-            Enter a prompt like "harry as a cat" to generate an image.
+            Enter a prompt like "@harry as a cat" to generate an image.
           </Text>
         </VStack>
 
