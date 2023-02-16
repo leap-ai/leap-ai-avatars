@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Leap } from "@leap-ai/sdk";
 
-const MODEL_ID = "enter-your-model-id-here";
+const MODEL_ID = "e62a3f3f-cce4-4cac-826b-d22e93f687d4";
 const IMAGE_WIDTH = 600;
 const IMAGE_HEIGHT = 400;
 
