@@ -120,7 +120,7 @@ const Home = () => {
           />
         </Box>
 
-        <Wrap w={{ base: "full", md: "30rem" }} justify="center">
+        <Wrap w={{ base: "full", md: "30rem" }} justify="left">
           {prompts.map((prompt) => (
             <WrapItem key={prompt}>
               <HStack
