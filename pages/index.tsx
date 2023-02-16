@@ -154,7 +154,9 @@ const Home = () => {
           pos="absolute"
           bottom={4}
           right={4}
-          onClick={() => window.open("https://leap-template.vercel.app")}
+          onClick={() =>
+            window.open("https://github.com/aleemrehmtulla/leap-template")
+          }
         >
           <AiFillGithub color="black" />
           <Text>Train Your Own Character</Text>
