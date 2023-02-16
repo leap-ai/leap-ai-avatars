@@ -50,6 +50,7 @@ const Home = () => {
       body: JSON.stringify({ prompt }),
     });
     const image = await response.json();
+    console.log(image);
 
     // set it, to switch the default image
     setImage(image.images[0].uri);
@@ -77,7 +78,7 @@ const Home = () => {
             textAlign="center"
             fontFamily="monospace"
           >
-            Enter a prompt like "@harry as a cat" to generate an image.
+            Enter a prompt like "harry as a cat" to generate an image.
           </Text>
         </VStack>
 
