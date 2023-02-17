@@ -13,6 +13,7 @@ import {
   VStack,
   Wrap,
   WrapItem,
+  useToast,
 } from "@chakra-ui/react";
 
 import { AiFillGithub } from "react-icons/ai";
@@ -28,8 +29,21 @@ const Home = () => {
     "https://generatepotter.com/default.png",
   ]);
 
+  const toast = useToast();
+
   const generate = async () => {
     setLoading(true);
+
+    if (prompt.length === 0) {
+      toast({
+        title: "Error",
+        description: "Enter a prompt first!",
+        status: "error",
+      });
+      setLoading(false);
+      return;
+    }
+
     // hit leap in our nextjs api route
     const response = await fetch("/api/generate", {
       method: "POST",
