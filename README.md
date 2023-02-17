@@ -31,4 +31,6 @@ let's get started by forking this repository (button top right), and downloading
 
 This is huge! You've got a custom model running on the web, and you can share it with the world. Now go forth and generate some potter!
 
+if you got value from this -- plz give us a star 🙂⭐
+
 built w/ ❤️ by [aleem](https://twitter.com/aleemrehmtulla) & [alex](https://twitter.com/thealexshaq)
