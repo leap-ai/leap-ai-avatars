@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Box,
@@ -14,6 +14,7 @@ import {
   Wrap,
   WrapItem,
   useToast,
+  Link,
 } from "@chakra-ui/react";
 
 import { AiFillGithub } from "react-icons/ai";
@@ -26,8 +27,15 @@ const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [images, setImages] = useState<string[]>([
-    "https://generatepotter.com/default.png",
+    "https://mario.wiki.gallery/images/3/3e/MPSS_Mario.png",
   ]);
+
+  // set default prompt
+  useEffect(() => {
+    setPrompt(
+      prompts.find((p) => p.label === "Psychadelic Mario")?.prompt || ""
+    );
+  }, []);
 
   const toast = useToast();
 
@@ -68,14 +76,14 @@ const Home = () => {
   return (
     <>
       <NextSeo
-        title="Generate Potter"
-        description="Generate Potter is a web app that uses the LeapML API to generate images of Harry Potter. It's built with Next.js, Chakra UI, and Leap AI."
+        title="Generate Mario"
+        description="Generate Mario is a web app that uses the Leap AI API to generate images of Mario. It's built with Next.js, Chakra UI, and Leap AI."
       />
       <VStack
         minH="100vh"
         w="100vw"
         spacing={4}
-        bg="#6D051E"
+        bg="#005fad"
         px={4}
         paddingBottom={4}
       >
@@ -86,9 +94,9 @@ const Home = () => {
               md: 32,
             }}
             color="gray.200"
-            fontFamily="harryfont"
+            fontFamily="mariofont"
           >
-            Generate Potter.
+            Generate Mario.
           </Heading>
           <Text
             color="gray.300"
@@ -97,7 +105,7 @@ const Home = () => {
             textAlign="center"
             fontFamily="monospace"
           >
-            Enter a prompt like "@harry as a cat" to generate an image.
+            Enter a prompt like "@leapmario as a cat" to generate an image.
           </Text>
         </VStack>
 
@@ -123,7 +131,7 @@ const Home = () => {
           _hover={loading ? {} : { opacity: 0.8 }}
           _active={loading ? {} : { transform: "scale(0.98)", opacity: 0.7 }}
           transitionDuration="200ms"
-          bg="#C99D25"
+          bg="#46ad37"
           color="white"
           p={2}
           fontFamily="monospace"
@@ -141,18 +149,18 @@ const Home = () => {
             <Image
               key={image}
               src={image}
-              alt="Harry Potter"
+              alt="Mario"
               rounded="lg"
               w="full"
               h={{ base: "3/4", md: "20rem" }}
-              objectFit="cover"
+              objectFit="contain"
               transitionDuration="200ms"
               opacity={loading ? 0.3 : 1}
             />
           ))}
         </Box>
 
-        <Wrap w={{ base: "full", md: "30rem" }} justify="center">
+        <Wrap w={{ base: "full", md: "30rem" }} pb={20} justify="center">
           {prompts.map((prompt) => (
             <WrapItem key={prompt.label}>
               <HStack
@@ -188,7 +196,9 @@ const Home = () => {
           bottom={4}
           right={4}
           onClick={() =>
-            window.open("https://github.com/aleemrehmtulla/leap-template")
+            window.open(
+              "https://replit.com/@leap-ai/AI-Avatars-App-Javascript-Harry-Potter-Professional"
+            )
           }
         >
           <AiFillGithub color="black" />
@@ -196,6 +206,25 @@ const Home = () => {
             Train Your Own Character
           </Text>
         </HStack>
+        <Box textAlign="center" pos="absolute" bottom={4} fontSize="xl">
+          <Text fontSize="xs" fontWeight="bold" mb={4}>
+            Takes around 30 seconds
+          </Text>
+          <Text fontSize="xs" fontWeight="bold">
+            Built by{" "}
+            <Link target="_blank" href="https://twitter.com/thealexshaq">
+              alex
+            </Link>{" "}
+            and{" "}
+            <Link target="_blank" href="https://twitter.com/aleemrehmtulla">
+              aleem
+            </Link>{" "}
+            with{" "}
+            <Link target="_blank" href="https://tryleap.ai">
+              Leap API ❤️
+            </Link>
+          </Text>
+        </Box>
       </VStack>
     </>
   );
