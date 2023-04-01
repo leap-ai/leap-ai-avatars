@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Leap } from "@leap-ai/sdk";
 
-const MODEL_ID = "791dc0c0-23ed-4c76-afef-0b8707bb637a"; // Mario model id
+const MODEL_ID = "711d1853-8c6c-4a7c-a1a9-198528e294c2"; // Mario model id
 const IMAGE_WIDTH = 600;
 const IMAGE_HEIGHT = 400;
 
