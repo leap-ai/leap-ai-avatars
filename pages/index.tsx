@@ -1,58 +1,91 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   Box,
   Button,
-  Heading,
-  HStack,
+  Flex,
+  IconButton,
   Image,
   Input,
-  Spinner,
+  Link,
   Text,
   VStack,
-  Wrap,
-  WrapItem,
   useToast,
-  Link,
 } from "@chakra-ui/react";
 
-import { AiFillGithub } from "react-icons/ai";
 import { NextSeo } from "next-seo";
+import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 
-import prompts from "helpers/prompts";
+import ImageUploading, {
+  ImageListType,
+  ImageType,
+} from "react-images-uploading";
+
+import GithubButton from "./src/components/index/GithubButton";
+import HomeHeader from "./src/components/index/HomeHeader";
+import PhotoExamples from "./src/components/index/PhotoExamples";
 
 const Home = () => {
   const [prompt, setPrompt] = useState<string>("");
+
+  const [apiKey, setApiKey] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const [images, setImages] = useState<string[]>([
-    "https://mario.wiki.gallery/images/3/3e/MPSS_Mario.png",
+    "https://super-static-assets.s3.amazonaws.com/876b5062-5238-432a-9142-e63034f73722/images/fa692dfd-7dd3-4947-8d73-eb1aaeedc8d9/IMG_8601.jpg",
   ]);
 
-  // set default prompt
-  useEffect(() => {
-    setPrompt(
-      prompts.find((p) => p.label === "Psychadelic Mario")?.prompt || ""
-    );
-  }, []);
+  const [uploadImages, setUploadImages] = useState<ImageType[]>([]);
 
   const toast = useToast();
 
-  const generate = async () => {
-    setLoading(true);
-
-    if (prompt.length === 0) {
+  // @abe this is method that hits nextjs endpoint to create model, upload samples, and queue training
+  const finetune = async () => {
+    if (uploadImages.length === 0) {
       toast({
         title: "Error",
-        description: "Enter a prompt first!",
+        description: "Add a photo first!",
         status: "error",
       });
-      setLoading(false);
       return;
     }
 
-    // hit leap in our nextjs api route
+    if (uploadImages.length > 10) {
+      toast({
+        title: "Error",
+        description: "10 photos maximum!",
+        status: "error",
+      });
+      return;
+    }
+
+    // @abe here is where we would send images to train the model
+    setLoading(true);
+    const formData = new FormData();
+    for (const image of uploadImages) {
+      const file = image.file;
+      if (file) {
+        formData.append("files", file);
+      }
+    }
+    formData.append("body", JSON.stringify({ apiKey }));
+
+    const response = await fetch("/api/finetune", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+      body: formData,
+    });
+
+    const responseData = await response.json();
+    setLoading(false);
+  };
+
+  const generate = async () => {
+    setLoading(true);
+    // hit generate endpoint once training finishes
     const response = await fetch("/api/generate", {
       method: "POST",
       headers: {
@@ -76,8 +109,8 @@ const Home = () => {
   return (
     <>
       <NextSeo
-        title="Generate Mario"
-        description="Generate Mario is a web app that uses the Leap AI API to generate images of Mario. It's built with Next.js, Chakra UI, and Leap AI."
+        title="Leap AI Avatars"
+        description="Leap AI Avatars is a web app that uses the Leap AI API to generate images of Mario. It's built with Next.js, Chakra UI, and Leap AI."
       />
       <VStack
         minH="100vh"
@@ -85,29 +118,112 @@ const Home = () => {
         spacing={4}
         bg="#005fad"
         px={4}
-        paddingBottom={4}
+        paddingBottom={"100px"}
+        fontFamily="monospace"
       >
-        <VStack spacing={1}>
-          <Heading
-            pt={{
-              base: 12,
-              md: 32,
-            }}
-            color="gray.200"
-            fontFamily="mariofont"
-          >
-            Generate Mario.
-          </Heading>
-          <Text
-            color="gray.300"
-            fontSize="lg"
-            w={{ base: "full", md: "lg" }}
-            textAlign="center"
-            fontFamily="monospace"
-          >
-            Enter a prompt like "@leapmario as a cat" to generate an image.
-          </Text>
-        </VStack>
+        <HomeHeader />
+        <PhotoExamples />
+
+        <ImageUploading
+          multiple
+          value={[]}
+          onChange={(images: ImageListType) => {
+            if (images.length === 0) {
+              return;
+            }
+            setUploadImages(images);
+          }}
+          dataURLKey="dataURL"
+        >
+          {({
+            imageList,
+            onImageUpload,
+            onImageRemoveAll,
+            onImageUpdate,
+            onImageRemove,
+            isDragging,
+            dragProps,
+          }) => (
+            <Flex
+              borderRadius="lg"
+              p={8}
+              maxW="500px"
+              w="100%"
+              justifyContent="center"
+              {...dragProps}
+            >
+              <Flex
+                flexWrap={"wrap"}
+                alignItems="center"
+                gridGap={"16px"}
+                justify={"center"}
+              >
+                {uploadImages.map((image, index) => (
+                  <Box
+                    key={index}
+                    className="image-item"
+                    h={100}
+                    position="relative"
+                    maxW={["100px", "100px", "200px"]}
+                  >
+                    <Image
+                      src={image.dataURL}
+                      alt=""
+                      objectFit="contain"
+                      borderRadius={"12px"}
+                      h={"100px"}
+                      border={"2px solid #fff"}
+                    />
+                    <IconButton
+                      aria-label="Remove Image"
+                      rounded={"full"}
+                      onClick={() =>
+                        // remove image from uploadImages
+                        setUploadImages((prevUploadImages) =>
+                          prevUploadImages.filter((_, i) => i !== index)
+                        )
+                      }
+                      zIndex={2}
+                      icon={
+                        <Image
+                          alt="delete"
+                          width="22px"
+                          src="https://uploads-ssl.webflow.com/630da1fccd22fa1b93dcfa57/6386363c9925b334bd6881fb_remove.svg"
+                        />
+                      }
+                      color={"#4685f6"}
+                      bg={"white"}
+                      border={"1px solid #1c1c1c"}
+                      h={25}
+                      w={25}
+                      minW={25}
+                      pos={"absolute"}
+                      top={-2}
+                      right={-2}
+                    />
+                  </Box>
+                ))}
+              </Flex>
+
+              {uploadImages.length === 0 && (
+                <Flex
+                  flexDirection={"column"}
+                  justify={"center"}
+                  alignItems={"center"}
+                  wrap={"wrap"}
+                  cursor={"pointer"}
+                  onClick={onImageUpload}
+                >
+                  <UploadIcon size={40} />
+
+                  <Text fontSize={"1.5em"} mt="10px" textAlign={"center"}>
+                    Click or Drop Images
+                  </Text>
+                </Flex>
+              )}
+            </Flex>
+          )}
+        </ImageUploading>
 
         <Input
           w={{ base: "full", md: "30rem" }}
@@ -115,16 +231,25 @@ const Home = () => {
           color="gray.100"
           focusBorderColor="gray.100"
           variant="outline"
-          onChange={(e) => setPrompt(e.target.value)}
-          value={prompt}
+          onChange={(e) => setApiKey(e.target.value)}
+          value={apiKey}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
-              generate();
+              finetune();
             }
           }}
-          fontFamily="monospace"
-          placeholder="Enter your image generation prompt here"
+          placeholder="Add your API KEY here"
         />
+        <Text fontSize={"sm"}>
+          Add your API Key from{" "}
+          <Link
+            target="_blank"
+            href="https://tryleap.ai"
+            textDecoration={"underline"}
+          >
+            Leap AI
+          </Link>
+        </Text>
 
         <Button
           w={{ base: "full", md: "30rem" }}
@@ -134,96 +259,56 @@ const Home = () => {
           bg="#46ad37"
           color="white"
           p={2}
-          fontFamily="monospace"
           rounded="lg"
           fontSize="lg"
           key={prompt}
-          onClick={() => generate()}
+          onClick={() => finetune()}
           isLoading={loading}
         >
-          Generate
+          Get AI Avatars
         </Button>
-
-        <Box w={{ base: "full", md: "30rem" }} h="auto">
-          {images.map((image) => (
-            <Image
-              key={image}
-              src={image}
-              alt="Mario"
-              rounded="lg"
-              w="full"
-              h={{ base: "3/4", md: "20rem" }}
-              objectFit="contain"
-              transitionDuration="200ms"
-              opacity={loading ? 0.3 : 1}
-            />
-          ))}
-        </Box>
-
-        <Wrap w={{ base: "full", md: "30rem" }} pb={20} justify="center">
-          {prompts.map((prompt) => (
-            <WrapItem key={prompt.label}>
-              <HStack
-                w="fit"
-                _hover={{ opacity: 0.8 }}
-                _active={{ transform: "scale(0.98)", opacity: 0.7 }}
-                transitionDuration="200ms"
-                fontWeight={"bold"}
-                color="white"
-                p={2}
-                border={"1px solid #fff"}
+        {/* {images.length > 0 && (
+          <Box w={{ base: "full", md: "30rem" }} h="auto">
+            {images.map((image) => (
+              <Image
+                key={image}
+                src={image}
+                alt="img"
                 rounded="lg"
-                fontSize="xs"
-                key={prompt.label}
-                cursor="pointer"
-                onClick={() => setPrompt(prompt.prompt)}
-              >
-                <Text>{prompt.label}</Text>
-              </HStack>
-            </WrapItem>
-          ))}
-        </Wrap>
-        <HStack
-          bg="white"
-          p={4}
-          py={2}
-          rounded="md"
-          _hover={{ opacity: 0.8 }}
-          _active={{ transform: "scale(0.99)", opacity: 0.7 }}
-          cursor="pointer"
-          transitionDuration="200ms"
-          pos="absolute"
-          bottom={4}
-          right={4}
-          onClick={() =>
-            window.open(
-              "https://replit.com/@leap-ai/AI-Avatars-App-Javascript-Harry-Potter-Professional"
-            )
-          }
+                w="full"
+                h={{ base: "3/4", md: "20rem" }}
+                objectFit="contain"
+                transitionDuration="200ms"
+                opacity={loading ? 0.3 : 1}
+              />
+            ))}
+          </Box>
+        )} */}
+        <Box
+          pos={"fixed"}
+          bottom={0}
+          w={"100%"}
+          bg={"#fff"}
+          color={"#1c1c1c"}
+          zIndex={999}
+          p={2}
         >
-          <AiFillGithub color="black" />
-          <Text fontWeight={"bold"} color={"#1c1c1c"}>
-            Train Your Own Character
-          </Text>
-        </HStack>
-        <Box textAlign="center" pos="absolute" bottom={4} fontSize="xl">
-          <Text fontSize="xs" fontWeight="bold" mb={4}>
-            Takes around 30 seconds
-          </Text>
-          <Text fontSize="xs" fontWeight="bold">
-            Built by{" "}
-            <Link target="_blank" href="https://twitter.com/thealexshaq">
-              alex
-            </Link>{" "}
-            and{" "}
-            <Link target="_blank" href="https://twitter.com/aleemrehmtulla">
-              aleem
-            </Link>{" "}
-            with{" "}
-            <Link target="_blank" href="https://tryleap.ai">
-              Leap API ❤️
-            </Link>
-          </Text>
+          <GithubButton />
+          <Box textAlign="center" fontSize="xl">
+            <Text fontSize="xs" fontWeight="bold" mb={2}>
+              Takes around 10 minutes to get AI Avatars
+            </Text>
+            <Text fontSize="xs" fontWeight="bold">
+              Built by{" "}
+              <Link target="_blank" href="https://twitter.com/thealexshaq">
+                alex
+              </Link>{" "}
+              with{" "}
+              <Link target="_blank" href="https://tryleap.ai">
+                Leap API ❤️
+              </Link>
+            </Text>
+          </Box>
         </Box>
       </VStack>
     </>

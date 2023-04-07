@@ -1,6 +1,6 @@
-# generate mario 🥸
+# leap ai avatars ⚡️
 
-it's-a me, mario! this repo has everything you need to deploy a custom Leap AI model. here we go! ✨
+welcome! this repo has everything you need to have a working Ai Avatars product out-of-the-box built with Leap AI. here we go! ✨
 
 let's get started by forking this repository (button top right), and downloading it to your computer. from there follow the below :)
 
