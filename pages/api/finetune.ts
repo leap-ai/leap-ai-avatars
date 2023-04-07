@@ -6,6 +6,12 @@ import FormData from "form-data";
 import axios from "axios";
 
 import { Leap } from "@leap-ai/sdk";
+import { LeapModelSchema } from "@leap-ai/sdk/dist/types/schemas/Model";
+
+interface QueueTrainingJobResponse {
+  id: string;
+  status: "queued" | "processing" | "finished" | "failed";
+}
 
 const apiRoute = nc<NextApiRequest, NextApiResponse>({
   // Handle any other HTTP method
@@ -42,10 +48,11 @@ apiRoute.post(upload.array("files"), async (req, res) => {
 
   // create new model
   console.log("Creating New Model...");
-  const { data: model, error: modelError } = await leap.fineTune.createModel({
+  const { data: model, error: modelError } = (await leap.fineTune.createModel({
     title: "AI Avatars Sample",
     subjectKeyword: "@me",
-  });
+  })) as { data: any; error?: any };
+
   console.log("New Model Created: ", model);
   const modelId = model?.id;
   const subjectKeyword = model?.subjectKeyword;
@@ -81,10 +88,10 @@ apiRoute.post(upload.array("files"), async (req, res) => {
 
       // next queue training job
       const { data: newVersion, error: newVersionError } =
-        await leap.fineTune.queueTrainingJob({
+        (await leap.fineTune.queueTrainingJob({
           modelId: modelId,
           // webhookUrl: "https://webhook.site/"
-        });
+        })) as { data: any; error?: any };
 
       // check if hit paid API limit or missing samples
       if (newVersionError) {
