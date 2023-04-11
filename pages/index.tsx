@@ -92,13 +92,18 @@ const Home = () => {
       const status = await response.json();
 
       if (status.error) {
-        window.alert("Error: " + status.error + " " + status.message);
+        console.log(status.error);
+        toast({
+          title: "Error",
+          description: status.error.message,
+          status: "error",
+        });
         setLoading(false);
         return;
       }
       return status.trainingStatus;
     },
-    [apiKey]
+    [apiKey, toast]
   );
 
   // this method checks if the model is already trained and ready to generate
@@ -110,15 +115,12 @@ const Home = () => {
       while (status !== "finished") {
         if (modelId) {
           // if no version ID, getStatus will use the latest version
-          try {
-            status = await getStatus(modelId, versionId);
-          } catch (error) {
-            console.log(error);
-            toast({
-              title: "Error",
-              status: "error",
-            });
+          status = await getStatus(modelId, versionId);
+          if (status === undefined) {
+            setLoading(false);
+            return;
           }
+
           setLoadingMessage(`Training Status: ${status}`);
           setLoadingSubmessage(
             `Training takes around 10 minutes. Check back later!`
@@ -147,7 +149,7 @@ const Home = () => {
       }
       setLoading(false);
     },
-    [generate, getStatus, toast]
+    [generate, getStatus]
   );
 
   // this is method that hits nextjs endpoint to create model, upload samples, and queue training
@@ -360,8 +362,9 @@ const Home = () => {
               <InputGroup size="md" w={{ base: "full", md: "30rem" }}>
                 <Input
                   py={4}
-                  focusBorderColor="red.100"
                   borderColor={"red.200"}
+                  color="gray.100"
+                  focusBorderColor="gray.100"
                   variant="outline"
                   onChange={(e) => setApiKey(e.target.value)}
                   value={apiKey}
