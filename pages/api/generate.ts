@@ -26,7 +26,7 @@ const generate = async (req: NextApiRequest, res: NextApiResponse) => {
     modelId: modelId,
     numberOfImages: 4,
     steps: 50,
-    upscaleBy: "x2",
+    upscaleBy: "x1",
     restoreFaces: true,
   });
 
