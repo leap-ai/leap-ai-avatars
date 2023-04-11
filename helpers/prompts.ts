@@ -1,11 +1,11 @@
 const keywordIdentifier = "@me";
 const prompts = [
   {
-    label: "Stylish",
+    label: "Professional",
     prompt:
-      "80's portrait of " +
+      "8k linkedin professional profile photo of " +
       keywordIdentifier +
-      ", blue background, white pearl neckless, fashion model in oversized white clothes, official balmain editorial, dramatic lighting highly detailed, analog photo, overglaze, 80mm Sigma f/1.4 or any ZEISS lens",
+      " in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
   },
   {
     label: "Psychadelic",
@@ -22,11 +22,11 @@ const prompts = [
       ", d & d, fantasy, intricate, elegant, highly detailed, digital painting, artstation, concept art, matte, sharp focus, illustration, hearthstone, art by artgerm and greg rutkowski and alphonse mucha, 8k",
   },
   {
-    label: "Professional",
+    label: "Stylish",
     prompt:
-      "8k linkedin professional profile photo of " +
+      "80's portrait of " +
       keywordIdentifier +
-      " in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
+      ", blue background, white pearl neckless, fashion model in oversized white clothes, official balmain editorial, dramatic lighting highly detailed, analog photo, overglaze, 80mm Sigma f/1.4 or any ZEISS lens",
   },
   {
     label: "Jedi",
