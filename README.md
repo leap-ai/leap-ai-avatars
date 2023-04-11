@@ -1,6 +1,6 @@
 # leap ai avatars ⚡️
 
-welcome! this repo has everything you need to have a working ai avatars product out-of-the-box built with Leap AI. here we go! ✨
+welcome! this repo has everything you need to have a working ai avatars product out-of-the-box built with Leap AI. ✨
 
 try it out [here](https://ai-avatars.vercel.app/)!
 
