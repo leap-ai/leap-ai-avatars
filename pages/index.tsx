@@ -134,7 +134,7 @@ const Home = () => {
         // once training is done, we will generate the images
         for (const prompt of prompts) {
           setLoadingMessage(`Generating ${prompt.label} Avatars...`);
-          setLoadingSubmessage(`Takes around 30 seconds`);
+          setLoadingSubmessage(`Takes around 30 seconds. Check back later!`);
 
           const avatars = await generate(modelId, prompt.prompt);
 
