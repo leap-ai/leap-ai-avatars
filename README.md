@@ -7,7 +7,7 @@ let's get started by forking this repository (button top right), and downloading
 ### run it locally
 
 1. Open the terminal
-2. Run `npm install` to grab the necceary packages
+2. Run `npm install` to grab the neccesary packages
 3. Hit `npm run dev` to start your server on `http://localhost:3000`
 
 ### how to get ai avatars
