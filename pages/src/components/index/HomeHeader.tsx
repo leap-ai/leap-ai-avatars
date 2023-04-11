@@ -20,8 +20,8 @@ const HomeHeader = () => {
     <VStack spacing={1}>
       <Heading
         pt={{
-          base: 12,
-          md: 32,
+          base: 20,
+          md: 20,
         }}
         color="gray.200"
         fontFamily="mariofont"

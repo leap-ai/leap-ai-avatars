@@ -1,25 +1,39 @@
-const keywordIdentifier = "@leapmario";
+const keywordIdentifier = "@me";
 const prompts = [
   {
-    label: "Pop Art Mario",
+    label: "Stylish",
     prompt:
-      "8k portrait of " +
+      "80's portrait of " +
       keywordIdentifier +
-      ", pop art style, incredibly detailed faces, wearing a colorful men's suit, 🎨🖌️, idol, ios",
+      ", blue background, white pearl neckless, fashion model in oversized white clothes, official balmain editorial, dramatic lighting highly detailed, analog photo, overglaze, 80mm Sigma f/1.4 or any ZEISS lens",
   },
   {
-    label: "Sketch Book Mario",
-    prompt:
-      "a beautiful painting of " +
-      keywordIdentifier +
-      ", mobile game asset, inspired by Eve Ryder, fantasy game spell icon, extremely realistic face, in nature, ios app icon, mourning, singer - songwriter, gameplay video",
-  },
-  {
-    label: "Psychadelic Mario",
+    label: "Psychadelic",
     prompt:
       "a psychedelic portrait of " +
       keywordIdentifier +
       ", vibrant color scheme, highly detailed, in the style of romanticism, cinematic, artstation, moebius, greg rutkowski",
+  },
+  {
+    label: "Fantasy",
+    prompt:
+      "8k portrait of " +
+      keywordIdentifier +
+      ", d & d, fantasy, intricate, elegant, highly detailed, digital painting, artstation, concept art, matte, sharp focus, illustration, hearthstone, art by artgerm and greg rutkowski and alphonse mucha, 8k",
+  },
+  {
+    label: "Professional",
+    prompt:
+      "8k linkedin professional profile photo of " +
+      keywordIdentifier +
+      " in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
+  },
+  {
+    label: "Jedi",
+    prompt:
+      "8k portrait of " +
+      keywordIdentifier +
+      " as a jedi, star wars revenge of the sith movie scene style, studio photography, volumetric lighting, smiling, realistic, 35mm, expressive, iconic, 8k concept art, photorealistic",
   },
 ];
 

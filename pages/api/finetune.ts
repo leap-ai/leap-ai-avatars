@@ -6,12 +6,6 @@ import FormData from "form-data";
 import axios from "axios";
 
 import { Leap } from "@leap-ai/sdk";
-import { LeapModelSchema } from "@leap-ai/sdk/dist/types/schemas/Model";
-
-interface QueueTrainingJobResponse {
-  id: string;
-  status: "queued" | "processing" | "finished" | "failed";
-}
 
 const apiRoute = nc<NextApiRequest, NextApiResponse>({
   // Handle any other HTTP method
@@ -35,23 +29,36 @@ apiRoute.post(upload.array("files"), async (req, res) => {
       error: "Missing or invalid file",
     });
   }
-
   // parse the `body` parameter for apiKey
-  const { apiKey } = JSON.parse(req.body.apiKey);
+  const body = JSON.parse(req.body.body);
+  const apiKey = body.apiKey;
+
   // check for api key
   const api_key = process.env.API_KEY as string;
   const useableKey = apiKey ? apiKey : api_key;
-  console.log(useableKey, "useableKey");
+
+  if (!useableKey) {
+    res.status(400).json({ error: "Invalid request. Check API Key" });
+    return;
+  }
 
   // instantiate sdk
   const leap = new Leap(useableKey);
 
-  // create new model
+  // create new model, subjectKeyword is used in prompts.ts to generate images
   console.log("Creating New Model...");
   const { data: model, error: modelError } = (await leap.fineTune.createModel({
     title: "AI Avatars Sample",
     subjectKeyword: "@me",
   })) as { data: any; error?: any };
+
+  // check valid api key
+  if (modelError) {
+    console.log("Error: ", modelError.message);
+    return res.status(400).json({
+      error: modelError.message,
+    });
+  }
 
   console.log("New Model Created: ", model);
   const modelId = model?.id;
@@ -65,8 +72,8 @@ apiRoute.post(upload.array("files"), async (req, res) => {
   };
 
   // the way multer handles file uploads, it only supports arrays of files
-  // we only upload one at a time so we fetch them here
-  const files = Array(req.files);
+  const filesArray = Array(req.files);
+  const files = filesArray[0] as any;
   console.log(files, "files");
 
   try {
@@ -74,11 +81,9 @@ apiRoute.post(upload.array("files"), async (req, res) => {
       const formData = new FormData();
 
       // here we convert the Multer buffer to a plain old javascript Buffer so that the Leap API can pick it up
-      for (const file in files) {
-        const f = (file as any)[0];
-        console.log(f, "f");
-
-        formData.append("files", Buffer.from(f.buffer), f.originalname);
+      for (const file of files) {
+        console.log(file, "file");
+        formData.append("files", Buffer.from(file.buffer), file.originalname);
       }
 
       const uploadSamplesResponse = await axios.post(url, formData, {

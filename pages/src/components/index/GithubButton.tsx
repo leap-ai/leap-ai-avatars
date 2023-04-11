@@ -13,7 +13,7 @@ const GithubButton = () => {
       cursor="pointer"
       transitionDuration="200ms"
       pos="absolute"
-      bottom={3}
+      top={0}
       right={4}
       onClick={() =>
         window.open(

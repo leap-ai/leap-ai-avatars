@@ -1,37 +1,48 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Leap } from "@leap-ai/sdk";
-
-const MODEL_ID = "711d1853-8c6c-4a7c-a1a9-198528e294c2"; // Mario model id
-const IMAGE_WIDTH = 600;
-const IMAGE_HEIGHT = 400;
+import prompts from "../../helpers/prompts";
 
 const generate = async (req: NextApiRequest, res: NextApiResponse) => {
-  const prompt = req.body.prompt as string;
-  const apiKey = process.env.LEAP_API_KEY as string;
+  // parse the `body` parameter for apiKey, modelId, and versionId
+  const { apiKey, modelId, prompt } = req.body;
 
-  if (!prompt || prompt.length === 0 || !apiKey) {
-    res.status(400).json({ error: "Invalid request. Check key and prompt." });
+  // check for api key
+  const api_key = process.env.API_KEY as string;
+  const useableKey = apiKey ? apiKey : api_key;
+
+  if (!useableKey) {
+    res.status(400).json({ error: "Invalid request. Check API Key" });
     return;
   }
 
-  const leap = new Leap(apiKey);
+  // instantiate sdk
+  const leap = new Leap(useableKey);
 
-  const { data, error } = await leap.generate.generateImage({
-    modelId: MODEL_ID,
-    prompt,
-    width: IMAGE_WIDTH,
-    height: IMAGE_HEIGHT,
+  // Now that we have a fine-tuned version of a model, we can generate images using it.
+  // Make sure subjectKeyword, ie. '@me' is in prompts and loop through prompts to generate images
+  let avatars = <string[]>[];
+
+  const { data: image, error: imageError } = await leap.generate.generateImage({
+    prompt: prompt,
+    modelId: modelId,
     numberOfImages: 4,
     steps: 50,
     upscaleBy: "x2",
+    restoreFaces: true,
   });
 
-  if (error) {
-    res.status(500).json(error);
+  if (imageError) {
+    res.status(500).json(imageError);
     return;
   }
 
-  res.status(200).json(data);
+  if (image) {
+    image.images.forEach((image) => {
+      avatars.push(image.uri);
+    });
+  }
+
+  res.status(200).json({ avatars: avatars });
 };
 
 export default generate;
