@@ -217,6 +217,7 @@ const Home = () => {
         px={4}
         paddingBottom={"100px"}
         fontFamily="monospace"
+        color={"white"}
       >
         <HomeHeader />
 
