@@ -2,6 +2,8 @@
 
 welcome! this repo has everything you need to have a working ai avatars product out-of-the-box built with Leap AI. here we go! ✨
 
+try it out [here](https://ai-avatars.vercel.app/)!
+
 let's get started by forking this repository (button top right), and downloading it to your computer. from there follow the below :)
 
 ### run it locally
