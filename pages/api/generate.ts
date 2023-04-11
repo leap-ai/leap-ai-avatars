@@ -1,6 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { Leap } from "@leap-ai/sdk";
-import prompts from "../../helpers/prompts";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const generate = async (req: NextApiRequest, res: NextApiResponse) => {
   // parse the `body` parameter for apiKey, modelId, and versionId

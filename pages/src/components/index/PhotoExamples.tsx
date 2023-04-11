@@ -7,7 +7,7 @@ const PhotoExamples = () => {
       borderColor={"white"}
       bg="white"
       borderRadius="lg"
-      maxW="500px"
+      maxW="850px"
       w="100%"
       p={2}
       justifyContent="center"
@@ -22,7 +22,7 @@ const PhotoExamples = () => {
         alt="goodExample"
         rounded="lg"
         w="100%"
-        maxH={"120px"}
+        maxH={"200px"}
         objectFit="contain"
       />
       <Image
@@ -32,7 +32,7 @@ const PhotoExamples = () => {
         alt="badExample"
         rounded="lg"
         w="100%"
-        maxH={"120px"}
+        maxH={"200px"}
         objectFit="contain"
       />
     </Flex>

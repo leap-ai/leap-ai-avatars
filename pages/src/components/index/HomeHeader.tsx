@@ -1,48 +1,27 @@
-import {
-  Heading,
-  Link,
-  ListItem,
-  UnorderedList,
-  VStack,
-} from "@chakra-ui/react";
+import { Heading, VStack } from "@chakra-ui/react";
+import Link from "next/link";
 
 const HomeHeader = () => {
-  const steps = [
-    {
-      text: <>Upload 3+ face photos (10max)</>,
-    },
-    {
-      text: <>Get your AI Avatars 🥳</>,
-    },
-  ];
-
   return (
-    <VStack spacing={1}>
+    <VStack spacing={1} mb={2}>
       <Heading
         pt={{
           base: 20,
           md: 20,
         }}
+        mb={3}
         color="gray.200"
-        fontFamily="mariofont"
-      >
-        Leap AI Avatars
-      </Heading>
-      <UnorderedList
-        color="gray.300"
-        fontSize="lg"
-        w={{ base: "full", md: "lg" }}
-        textAlign="left"
         fontFamily="monospace"
-        listStyleType="none"
-        maxW={350}
       >
-        {steps.map((step, index) => (
-          <ListItem key={index}>
-            {index + 1}. {step.text}
-          </ListItem>
-        ))}
-      </UnorderedList>
+        🔥{" "}
+        <Link target="_blank" href="https://tryleap.ai">
+          Leap AI
+        </Link>{" "}
+        Avatars 🔥
+      </Heading>
+      <Heading fontFamily="monospace" fontSize={"2xl"}>
+        Get your Avatars in 3 easy steps
+      </Heading>
     </VStack>
   );
 };

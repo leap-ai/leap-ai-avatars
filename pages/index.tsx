@@ -1,19 +1,24 @@
-import { useCallback, useState } from "react";
 import {
   Box,
   Button,
   Flex,
+  Heading,
   IconButton,
   Image,
   Input,
+  InputGroup,
+  InputRightElement,
   Link,
   Text,
   VStack,
   useToast,
 } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 
 import { NextSeo } from "next-seo";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
+
+import { HiOutlineKey as KeyIcon } from "react-icons/hi";
 
 import ImageUploading, {
   ImageListType,
@@ -142,7 +147,7 @@ const Home = () => {
       }
       setLoading(false);
     },
-    [generate, getStatus]
+    [generate, getStatus, toast]
   );
 
   // this is method that hits nextjs endpoint to create model, upload samples, and queue training
@@ -208,7 +213,7 @@ const Home = () => {
         minH="100vh"
         w="100vw"
         spacing={4}
-        bg="#005fad"
+        bg="#101219"
         px={4}
         paddingBottom={"100px"}
         fontFamily="monospace"
@@ -217,141 +222,186 @@ const Home = () => {
 
         {imageBatch.length === 0 && !loading && (
           <>
-            <ImageUploading
-              multiple
-              value={[]}
-              onChange={(images: ImageListType) => {
-                if (images.length === 0) {
-                  return;
-                }
-                setUploadImages(images);
-              }}
-              dataURLKey="dataURL"
-            >
-              {({
-                imageList,
-                onImageUpload,
-                onImageRemoveAll,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
-                <Flex
-                  borderRadius="lg"
-                  p={8}
-                  maxW="500px"
-                  border={
-                    uploadImages.length === 0 ? "1px dashed #fff" : "none"
-                  }
-                  w="100%"
-                  justifyContent="center"
-                  {...dragProps}
+            <VStack gap={6}>
+              <Heading
+                fontSize={"xl"}
+                fontFamily="monospace"
+                textAlign={"left"}
+              >
+                1) Upload 3-10 photos of yourself
+              </Heading>
+
+              <VStack gap={1}>
+                <ImageUploading
+                  multiple
+                  value={[]}
+                  onChange={(images: ImageListType) => {
+                    if (images.length === 0) {
+                      return;
+                    }
+                    setUploadImages(images);
+                  }}
+                  dataURLKey="dataURL"
                 >
-                  <Flex
-                    flexWrap={"wrap"}
-                    alignItems="center"
-                    gridGap={"16px"}
-                    justify={"center"}
-                  >
-                    {uploadImages.map((image, index) => (
-                      <Box
-                        key={index}
-                        className="image-item"
-                        h={100}
-                        position="relative"
-                        maxW={["100px", "100px", "200px"]}
-                      >
-                        <Image
-                          src={image.dataURL}
-                          alt=""
-                          objectFit="contain"
-                          borderRadius={"12px"}
-                          h={"100px"}
-                          border={"2px solid #fff"}
-                        />
-                        <IconButton
-                          aria-label="Remove Image"
-                          rounded={"full"}
-                          onClick={() =>
-                            // remove image from uploadImages
-                            setUploadImages((prevUploadImages) =>
-                              prevUploadImages.filter((_, i) => i !== index)
-                            )
-                          }
-                          zIndex={2}
-                          icon={
-                            <Image
-                              alt="delete"
-                              width="22px"
-                              src="https://uploads-ssl.webflow.com/630da1fccd22fa1b93dcfa57/6386363c9925b334bd6881fb_remove.svg"
-                            />
-                          }
-                          color={"#4685f6"}
-                          bg={"white"}
-                          border={"1px solid #1c1c1c"}
-                          h={25}
-                          w={25}
-                          minW={25}
-                          pos={"absolute"}
-                          top={-2}
-                          right={-2}
-                        />
-                      </Box>
-                    ))}
-                  </Flex>
-
-                  {uploadImages.length === 0 && (
+                  {({
+                    imageList,
+                    onImageUpload,
+                    onImageRemoveAll,
+                    onImageUpdate,
+                    onImageRemove,
+                    isDragging,
+                    dragProps,
+                  }) => (
                     <Flex
-                      flexDirection={"column"}
-                      justify={"center"}
-                      alignItems={"center"}
-                      wrap={"wrap"}
-                      cursor={"pointer"}
-                      onClick={onImageUpload}
+                      borderRadius="lg"
+                      p={8}
+                      maxW="850px"
+                      border={
+                        uploadImages.length === 0 ? "1px dashed #fff" : "none"
+                      }
+                      w="100%"
+                      justifyContent="center"
+                      {...dragProps}
                     >
-                      <UploadIcon size={40} />
+                      <Flex
+                        flexWrap={"wrap"}
+                        alignItems="center"
+                        gridGap={"16px"}
+                        justify={"center"}
+                      >
+                        {uploadImages.map((image, index) => (
+                          <Box
+                            key={index}
+                            className="image-item"
+                            h={100}
+                            position="relative"
+                            maxW={["100px", "100px", "200px"]}
+                          >
+                            <Image
+                              src={image.dataURL}
+                              alt=""
+                              objectFit="contain"
+                              borderRadius={"12px"}
+                              h={"100px"}
+                              border={"2px solid #fff"}
+                            />
+                            <IconButton
+                              aria-label="Remove Image"
+                              rounded={"full"}
+                              onClick={() =>
+                                // remove image from uploadImages
+                                setUploadImages((prevUploadImages) =>
+                                  prevUploadImages.filter((_, i) => i !== index)
+                                )
+                              }
+                              zIndex={2}
+                              icon={
+                                <Image
+                                  alt="delete"
+                                  width="22px"
+                                  src="https://uploads-ssl.webflow.com/630da1fccd22fa1b93dcfa57/6386363c9925b334bd6881fb_remove.svg"
+                                />
+                              }
+                              color={"#4685f6"}
+                              bg={"white"}
+                              border={"1px solid #1c1c1c"}
+                              h={25}
+                              w={25}
+                              minW={25}
+                              pos={"absolute"}
+                              top={-2}
+                              right={-2}
+                            />
+                          </Box>
+                        ))}
+                      </Flex>
 
-                      <Text fontSize={"1.5em"} mt="10px" textAlign={"center"}>
-                        Click or Drop Images
-                      </Text>
+                      {uploadImages.length === 0 && (
+                        <Flex
+                          flexDirection={"column"}
+                          justify={"center"}
+                          alignItems={"center"}
+                          wrap={"wrap"}
+                          cursor={"pointer"}
+                          onClick={onImageUpload}
+                        >
+                          <UploadIcon size={40} />
+
+                          <Text
+                            fontSize={"1.5em"}
+                            mt="10px"
+                            textAlign={"center"}
+                          >
+                            Click or Drop Images
+                          </Text>
+                        </Flex>
+                      )}
                     </Flex>
                   )}
-                </Flex>
-              )}
-            </ImageUploading>
-            <PhotoExamples />
+                </ImageUploading>
+                <PhotoExamples />
+              </VStack>
 
-            <Input
-              w={{ base: "full", md: "30rem" }}
-              py={4}
-              color="gray.100"
-              focusBorderColor="gray.100"
-              variant="outline"
-              onChange={(e) => setApiKey(e.target.value)}
-              value={apiKey}
-              placeholder="Add your API KEY here"
-            />
-            <Input
-              w={{ base: "full", md: "30rem" }}
-              py={4}
-              color="gray.100"
-              focusBorderColor="gray.100"
-              variant="outline"
-              onChange={(e) => setModelId(e.target.value)}
-              value={modelId}
-              placeholder="Optional model ID to use existing model"
-            />
-            <Text fontSize={"sm"}>
-              Get your API Key & model ID from{" "}
-              <Link
-                target="_blank"
-                href="https://tryleap.ai"
-                textDecoration={"underline"}
+              <Heading
+                fontSize={"xl"}
+                fontFamily="monospace"
+                textAlign={"left"}
               >
-                Leap AI
-              </Link>
-            </Text>
+                2) Add your API Key from{" "}
+                <Link
+                  target="_blank"
+                  href="https://tryleap.ai"
+                  textDecoration={"underline"}
+                >
+                  Leap AI
+                </Link>{" "}
+              </Heading>
+              <InputGroup size="md" w={{ base: "full", md: "30rem" }}>
+                <Input
+                  py={4}
+                  focusBorderColor="red.100"
+                  borderColor={"red.200"}
+                  variant="outline"
+                  onChange={(e) => setApiKey(e.target.value)}
+                  value={apiKey}
+                  placeholder="Add your API KEY here"
+                />
+                <InputRightElement width="3rem">
+                  <IconButton
+                    onClick={() => {
+                      window.open("https://tryleap.ai", "_blank");
+                    }}
+                    aria-label="key"
+                    icon={<KeyIcon />}
+                  />
+                </InputRightElement>
+              </InputGroup>
+
+              <Heading
+                fontSize={"xl"}
+                fontFamily="monospace"
+                textAlign={"left"}
+              >
+                3) (Optional) add your model ID from{" "}
+                <Link
+                  target="_blank"
+                  href="https://tryleap.ai"
+                  textDecoration={"underline"}
+                >
+                  Leap AI
+                </Link>{" "}
+              </Heading>
+              <Input
+                w={{ base: "full", md: "30rem" }}
+                py={4}
+                color="gray.100"
+                focusBorderColor="gray.100"
+                variant="outline"
+                onChange={(e) => setModelId(e.target.value)}
+                value={modelId}
+                placeholder="Optional model ID to use existing model"
+              />
+            </VStack>
           </>
         )}
 
@@ -445,7 +495,7 @@ const Home = () => {
               . Create your own AI Avatars app{" "}
               <Link
                 target="_blank"
-                href="https://tryleap.ai"
+                href="https://github.com/alexschachne/leap-ai-avatars"
                 textDecoration={"underline"}
               >
                 here

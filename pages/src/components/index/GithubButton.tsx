@@ -16,9 +16,7 @@ const GithubButton = () => {
       top={0}
       right={4}
       onClick={() =>
-        window.open(
-          "https://replit.com/@leap-ai/AI-Avatars-App-Javascript-Harry-Potter-Professional"
-        )
+        window.open("https://github.com/alexschachne/leap-ai-avatars")
       }
     >
       <AiFillGithub color="black" />

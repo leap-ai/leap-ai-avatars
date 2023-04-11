@@ -25,7 +25,6 @@ const getStatus = async (req: NextApiRequest, res: NextApiResponse) => {
         modelId: modelId,
       })) as { data: any; error?: any };
 
-    // Check for existing versions, use first version created
     if (listModelVersions) {
       const existingVersion = listModelVersions[0];
       versionId = existingVersion ? existingVersion.id : null;
@@ -45,10 +44,7 @@ const getStatus = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const trainingStatus = checkStatus.status;
-  console.log("Training Status: " + trainingStatus);
   res.status(200).json({ trainingStatus: trainingStatus });
-  // wait for 10 seconds before re-polling status
-  await new Promise((resolve) => setTimeout(resolve, 10000));
 };
 
 export default getStatus;
