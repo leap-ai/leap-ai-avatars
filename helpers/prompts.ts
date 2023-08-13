@@ -1,4 +1,4 @@
-const keywordIdentifier = "@me";
+const keywordIdentifier = "@subject";
 const prompts = [
   {
     label: "Professional",
